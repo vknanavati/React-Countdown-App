@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState} from 'react';
 
 function App() {
+
+  const [date, setDate] = useState("");
+  const [submitDate, setSubmitDate] = useState("");
+
+  console.log(new Date())
+
+  const displayDate = e => {
+    e.preventDefault();
+    setSubmitDate(date);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <div>
+    <h2>Countdown Clock</h2>
+    <form>
+      <input
+      value={date}
+      placeholder="enter date"
+      onChange={e => setDate(e.target.value)}
+      />
+      <button
+      onClick={e => displayDate(e)}
+      >Submit</button>
+    </form>
+    {submitDate && <p>{submitDate}</p>}
+   </div>
   );
 }
 
