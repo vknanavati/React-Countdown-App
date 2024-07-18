@@ -1,19 +1,42 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 function App() {
 
   const [date, setDate] = useState("");
   const [submitDate, setSubmitDate] = useState("");
+  const [days, setDays] = useState("");
+  const [hours, setHours] = useState("");
+  const [minutes, setMinutes] = useState("");
+  const [seconds, setSeconds] = useState("")
+  const [countdown, setCountdown] = useState(false)
 
-  console.log(new Date())
 
-  const displayDate = e => {
+  const handleClick = (e) => {
     e.preventDefault();
     setSubmitDate(date);
+    setCountdown(true);
+  }
+  const calculateTime = (userDate) => {
+    const timeMS = Date.parse(userDate) -
+    Date.parse(new Date());
+
+    setDays(Math.floor(timeMS/(1000*60*60*24)));
+    setHours(Math.floor((timeMS/(1000*60*60))%24));
+    setMinutes(Math.floor((timeMS/1000/60)%60));
+    setSeconds(Math.floor((timeMS/1000)%60));
   }
 
+    useEffect(()=>{
+      if (submitDate) {
+        const interval = setInterval(()=>{
+          calculateTime(submitDate);
+        }, 1000);
+        return () => clearInterval(interval)
+      }
+    }, [submitDate])
+
   return (
-   <div>
+   <div className="body">
     <h2>Countdown Clock</h2>
     <form>
       <input
@@ -22,10 +45,19 @@ function App() {
       onChange={e => setDate(e.target.value)}
       />
       <button
-      onClick={e => displayDate(e)}
+      onClick={e => handleClick(e)}
       >Submit</button>
     </form>
-    {submitDate && <p>{submitDate}</p>}
+    <div>
+      {countdown && (
+        <>
+        {<span>{days !=="" ? `${days} days` : ""} </span>}
+        {<span>{hours !=="" ? `${hours} hours` : ""} </span>}
+        {<span>{minutes !=="" ? `${minutes} minutes` : ""} </span>}
+        {<span>{seconds !=="" ? `${seconds} seconds`: ""} </span>}
+        </>
+      )}
+    </div>
    </div>
   );
 }
