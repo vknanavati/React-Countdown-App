@@ -15,8 +15,11 @@ function App() {
     e.preventDefault();
     setSubmitDate(date);
     setCountdown(true);
+    calculateTime(date)
   }
   const calculateTime = (userDate) => {
+    /*parse parses the date string and returns the
+    number of milliseconds. */
     const timeMS = Date.parse(userDate) -
     Date.parse(new Date());
 
@@ -25,7 +28,10 @@ function App() {
     setMinutes(Math.floor((timeMS/1000/60)%60));
     setSeconds(Math.floor((timeMS/1000)%60));
   }
-
+  /*If submitDate is true then countdown will start.
+  setInterval calls a function at specified intervals.
+  In this case calculateTime gets called every 1000 milliseconds
+  to update the countdown. */
     useEffect(()=>{
       if (submitDate) {
         const interval = setInterval(()=>{
