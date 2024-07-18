@@ -3,7 +3,6 @@ import {useState, useEffect} from 'react';
 function App() {
 
   const [date, setDate] = useState("");
-  const [submitDate, setSubmitDate] = useState("");
   const [days, setDays] = useState("");
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
@@ -13,7 +12,6 @@ function App() {
 
   const handleClick = (e) => {
     e.preventDefault();
-    setSubmitDate(date);
     setCountdown(true);
     calculateTime(date)
   }
@@ -28,18 +26,18 @@ function App() {
     setMinutes(Math.floor((timeMS/1000/60)%60));
     setSeconds(Math.floor((timeMS/1000)%60));
   }
-  /*If submitDate is true then countdown will start.
+  /*If date is true then countdown will start.
   setInterval calls a function at specified intervals.
   In this case calculateTime gets called every 1000 milliseconds
   to update the countdown. */
     useEffect(()=>{
-      if (submitDate) {
+      if (date) {
         const interval = setInterval(()=>{
-          calculateTime(submitDate);
+          calculateTime(date);
         }, 1000);
         return () => clearInterval(interval)
       }
-    }, [submitDate])
+    }, [date])
 
   return (
    <div className="body">
